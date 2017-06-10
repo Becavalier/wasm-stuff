@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<script>
+  var Module = {};
+
+  fetch('program.wasm').then(response => response.arrayBuffer()).then((bytes) => {
+    Module.wasmBinary = bytes;
+    var script = document.createElement('script');
+    script.src = "program.js";
+    document.body.appendChild(script);
+  });
+
+  window.onload = function () {
+      // Module.ccall('test_printInt');
+      // Module.ccall('test_printStr');
+
+      var arrayOffset = Module.ccall('getArrayOffset', 'number');
+
+      console.time("WASM-NO-RECURSION");
+      var arr = [];
+      for (var j = 0; j < 1000000; j++) {
+          for (var i = 0; i < 100; i++) {
+              var number = Math.round(Math.random() * 100);
+              // arr.push(number);
+              Module.setValue(arrayOffset + 4 * i, number, 'i32');
+          }
+          /*
+          console.log(arr);
+          for (var i = 0; i < 100; i++) {
+              console.log(Module.getValue(arrayOffset + 4 * i, 'i32'));
+          }
+          */
+          Module.ccall('sort');
+      }
+      console.timeEnd("WASM-NO-RECURSION");
+
+  }
+</script>
+</body>
+</html>

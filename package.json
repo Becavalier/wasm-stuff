@@ -1,0 +1,22 @@
+{
+  "name": "wasmplay",
+  "version": "1.0.0",
+  "description": "Wasm",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Becavalier/WasmPlay.git"
+  },
+  "keywords": [
+    "Wasm"
+  ],
+  "author": "YHSPY",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Becavalier/WasmPlay/issues"
+  },
+  "homepage": "https://github.com/Becavalier/WasmPlay#readme"
+}
