@@ -1,0 +1,22 @@
+<html>
+<head></head>
+<body>
+<script>
+    fetch('program.wasm').then(response => response.arrayBuffer()).then((bytes) => {
+        var wasmCode = bytes;
+        var memory = new WebAssembly.Memory({initial: 2, maximum: 100});
+        var importObject = {
+            env: {
+                memory: memory
+            }
+        }
+
+        WebAssembly.instantiate(wasmCode, importObject).then(result => {
+            result.instance.exports.plus(new Int32Array(memory.buffer), 20);
+        console.log(new Int32Array(memory.buffer));
+        });
+    });
+</script>
+</body>
+</html>
+
