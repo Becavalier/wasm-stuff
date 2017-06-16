@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SimpleDIP</title>
+    <style>
+        #video {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas">
+    <video id="video" loop="true" autoplay="" src="media/scenery.mp4" type="video/mp4">
+</body>
+<script src = './dip.js' type = 'text/javascript'></script>
+    <script>
+    loadWASM().then(filter => {
+        var video = document.getElementById('video');
+        var canvas = document.getElementById('canvas');
+        // 获得画布的绘制上下文；
+        var context = canvas.getContext('2d');
+        // 当视频的第一帧完全载入时触发回调；s
+        video.addEventListener("loadeddata", function() {
+        // 设置画布的大小；
+        canvas.setAttribute('height', video.videoHeight);
+        canvas.setAttribute('width', video.videoWidth);
+        // 获得画布的舞台（可绘制区域）大小；
+        clientx = canvas.clientWidth;
+        clienty = canvas.clientHeight;
+        // 开始绘制；
+        draw();
+    });
+
+    function draw() {
+        // 从画布的左上角开始绘制当前视频的第一帧；
+        context.drawImage(video, 0, 0);
+        // 获得当前帧画面的 ImageData 对象；
+        pixels = context.getImageData(0, 0, video.videoWidth, video.videoHeight);
+        pixels.data.set(filter(pixels.data, clientx, clienty));
+        // 将之前获得 ImageData 对象绘制到画布上；
+        context.putImageData(pixels, 0, 0);
+        // 逐帧绘制（通常60帧每秒）；
+        requestAnimationFrame(draw);
+    }
+    });
+    </script>
+</html>
