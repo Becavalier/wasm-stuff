@@ -22,6 +22,9 @@ function loadWASM() {
                         var divisor = 3;
                         const arLen = pixelData.length;
                         const memData = _malloc(arLen * Float32Array.BYTES_PER_ELEMENT);
+
+                        // var memory = new Float32Array(Module.wasmMemory.buffer);
+                        // memory.set(pixelData, memData / Float32Array.BYTES_PER_ELEMENT);
                         HEAPF32.set(pixelData, memData / Float32Array.BYTES_PER_ELEMENT);
                         const kerWidth = kernel[0].length;
                         const kerHeight = kernel.length;

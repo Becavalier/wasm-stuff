@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VideoRender</title>
+    <script src="./lib/file.js"></script>
+</head>
+<body>
+<input type="file" id="loader" onchange="readVideoFile()"/>
+
+<script>
+    // 初始化全局 Module，Emscripten 会自动为我们初始化
+    var Module = {};
+
+    fetch('test.wasm').then(response => response.arrayBuffer()).then((bytes) => {
+        // 填充主要数据
+        Module.wasmBinary = bytes;
+    // 异步载入初始化脚本（该脚本是编译后自动生成的）
+    var script = document.createElement('script');
+    script.src = "test.js";
+    document.body.appendChild(script);
+    });
+
+    window.onload = function () {
+        Module.ccall('base64_process');
+        var arrayOffset = Module.ccall('retrive_hash_pointer', 'number');
+        console.log(Module.getValue(arrayOffset + 4 * i, 'i32'));
+    }
+</script>
+</body>
+</html>
